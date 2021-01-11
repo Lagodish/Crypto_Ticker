@@ -5,10 +5,9 @@ This program will display current cryptocurrency prices on a small display. Pric
 
 ### Dependencies 
 
-* squix78/ESP8266_SSD1306 @ ^4.1.0
-* bblanchon/ArduinoJson @  5.13.4
-
-* Clone to the "Home/Arduino/libraries" directory.
+* lib_deps =
+*   bblanchon/ArduinoJson @  5.13.4
+*   squix78/ESP8266_SSD1306 @ ^4.1.0
 
 ### Issues
 
