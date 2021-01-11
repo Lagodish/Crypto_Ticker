@@ -1,7 +1,7 @@
-# Crypto Ticker
+# Crypto Ticker PlatformIO
 
-This program will display current cryptocurrency prices on a small display. Price information is acquired from cryptocompare.com over WiFi or bluetooth. The board is based around the ESP32 microcontroller, which integrates WiFi, Bluetooth, and BLE connectivity. The final product incorporates a 3D-printed case, lithium battery, touch button (NO!), OLED display, and main control board. The device is woken up with the touch button and subsequent presses will cycle through different currencies on the display.
-![GitHub Logo](/image.png)
+This program will display current cryptocurrency prices on a small display. Price information is acquired from cryptocompare.com over WiFi. The board is based around the ESP32 microcontroller, which integrates WiFi, Bluetooth, and BLE connectivity. The final product incorporates a 3D-printed case, lithium battery, touch button (NO!), OLED display, and main control board. The device is woken up with the touch button and subsequent presses will cycle through different currencies on the display.
+![WiFi](/image.png)
 
 
 ### Dependencies 
@@ -12,7 +12,7 @@ This program will display current cryptocurrency prices on a small display. Pric
 
 ### Issues
 
-* Uploading code to some boards fails. Change the serial upload speed from 921600 to 115200 in the Arduino IDE.
+* Not detected :)
 
 ## Built With
 
