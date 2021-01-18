@@ -8,8 +8,8 @@
 #include "esp_sleep.h"
 #include "esp_wifi.h"
 
-const char* ssid = "----";     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! WiFi Name (SSID)
-const char* password = "----------"; //!!!!!!!!!!!!!!!!!!!!!!!!! WIFI Password 
+const char* ssid = "------------";     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! WiFi Name (SSID)
+const char* password = "------------"; //!!!!!!!!!!!!!!!!!!!!!!!!! WIFI Password 
 
 const uint8_t activeSymbol[] PROGMEM = {
     B00000000,
@@ -32,6 +32,7 @@ const uint8_t inactiveSymbol[] PROGMEM = {
     B00000000
 };
 void update_screen(void* arg);
+void update_data(void* arg);
 
 bool connected = false;
 
@@ -222,6 +223,8 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
   Serial.println();
+  //uint8_t newMACAddress[] = {0x32, 0xAE, 0xA2, 0x07, 0x0D, 0x36};
+  //esp_wifi_set_mac(ESP_IF_WIFI_STA, &newMACAddress[0]);
 
   //Lower the FPS to reduce power?
   ui.setTargetFPS(60);
@@ -259,36 +262,33 @@ void setup() {
   ui.switchToFrame(prevFrame);
 
   Serial.println("Initialized display");  
+  crypto = cryptoCoins();
 
   //Create a new task to update the screen
   xTaskCreatePinnedToCore(
                     update_screen,   /* Function to implement the task */
                     "update_screen", /* Name of the task */
-                    2000,      /* Stack size in words */
+                    5000,      /* Stack size in words */
                     NULL,       /* Task input parameter */
                     1,          /* Priority of the task */
                     &update_screen_handle,       /* Task handle. */
                     1);			/* Core number */
     
-    crypto = cryptoCoins();
-    crypto.update();    
+  xTaskCreatePinnedToCore(
+                    update_data,   /* Function to implement the task */
+                    "update_data", /* Name of the task */
+                    5000,      /* Stack size in words */
+                    NULL,       /* Task input parameter */
+                    1,          /* Priority of the task */
+                    NULL,       /* Task handle. */
+                    1);			/* Core number */
+
+        //crypto.update();    
    
 }
 
-int cryptoUpdate = 0;
-const int updateInterval = 12000; //10 second update
-
-
 void loop() {
- 
-  if(millis() - cryptoUpdate > updateInterval){
-  	  cryptoUpdate = millis();  	  
-  	  crypto.update();	  
-  }	
-  else{
-	  vTaskDelay(5000/portTICK_PERIOD_MS);}
-//vTaskDelete(NULL);
-
+ vTaskDelete(NULL);
 }
 
 void update_screen(void* arg){
@@ -298,6 +298,12 @@ void update_screen(void* arg){
 	if (remainingTimeBudget > 0) {
 	vTaskDelay(remainingTimeBudget/portTICK_PERIOD_MS);
     }
+	}
+}
+void update_data(void* arg){
+	while(true){	  
+  	  crypto.update();	
+      vTaskDelay(30000/portTICK_PERIOD_MS);
 	}
 }
 
